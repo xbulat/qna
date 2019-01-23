@@ -52,7 +52,12 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirects to show view' do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }
-        expect(response).to redirect_to question_answer_path(question, controller.answers.last)
+        expect(response).to redirect_to answer_path(controller.answers.last)
+      end
+
+      it 'created Answer belongs to Question' do
+        post :create, params: { question_id: question, answer: attributes_for(:answer) }
+        expect(assigns(:answer).question).to eq question
       end
     end
 
