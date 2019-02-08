@@ -1,0 +1,17 @@
+h1= question.title
+h2= "Author: #{question.user.email}"
+
+p= question.body
+
+h2 Answers
+table
+  thead
+    tr
+      th Author
+      th Body
+      th Action
+  tbody
+  = render question.answers
+
+h3 Add Answer
+= render 'answers/form'

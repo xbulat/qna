@@ -1,0 +1,5 @@
+- if answer.persisted?
+  tr
+    td = answer.user.email
+    td = answer.body
+    td = link_to 'Delete', answer_path(answer), method: :delete
