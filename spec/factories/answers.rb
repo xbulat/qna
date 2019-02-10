@@ -14,5 +14,9 @@ FactoryBot.define do
     trait :with_question do
       question
     end
+
+    trait :sequence do
+      sequence(:body) { |n| "MyAnswerText#{n}" }
+    end
   end
 end

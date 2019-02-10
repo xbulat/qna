@@ -23,16 +23,6 @@ feature 'Users can destroy answer', %q{
     sign_in(user)
 
     visit question_path(answer.question)
-    click_link('Delete', href: answer_path(answer))
-
-    expect(page).to have_content 'MyAnswerText'
-    expect(page).to have_content 'You can not delete foreign answer.'
-  end
-
-  scenario 'someone tries to delete answer' do
-    visit question_path(answer.question)
-    click_link('Delete', href: answer_path(answer))
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_no_content 'Delete'
   end
 end

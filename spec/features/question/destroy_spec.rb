@@ -21,16 +21,6 @@ feature 'Users can destroy question', %q{
     sign_in(user)
     visit questions_path
 
-    click_link('Delete', href: question_path(question))
-
-    expect(page).to have_content 'MyString'
-    expect(page).to have_content 'MyText'
-  end
-
-  scenario 'someone tries to delete question' do
-    visit questions_path
-    click_link('Delete', href: question_path(question))
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_no_content 'Delete'
   end
 end

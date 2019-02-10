@@ -7,5 +7,10 @@ FactoryBot.define do
     trait :invalid do
       title { nil }
     end
+
+    trait :sequence do
+      sequence(:title) { |n| "Title#{n}" }
+      sequence(:body) { |n| "Question#{n}" }
+    end
   end
 end

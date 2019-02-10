@@ -24,7 +24,13 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    question.destroy if question.user == current_user
+    if current_user.author_of?(question)
+      question.destroy
+      flash[:notice] = 'Your question has been deleted.'
+    else
+      flash[:notice] = 'You can not delete foreign question.'
+    end
+
     redirect_to questions_path
   end
 

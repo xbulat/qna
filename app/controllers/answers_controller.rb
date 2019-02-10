@@ -17,14 +17,14 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if answer.user == current_user
+    if current_user.author_of?(answer)
       answer.destroy
-      flash[:notice] = 'Your answer successfully deleted.'
+      flash_msg = 'Your answer successfully deleted.'
     else
-      flash[:notice] = 'You can not delete foreign answer.'
+      flash_msg = 'You can not delete foreign answer.'
     end
 
-    redirect_to answer.question
+    redirect_to answer.question, notice: flash_msg
   end
 
   private

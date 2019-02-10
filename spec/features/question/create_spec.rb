@@ -25,12 +25,6 @@ feature 'User can create question', %q{
       expect(page).to have_content 'Test question'
       expect(page).to have_content 'text text text'
     end
-
-    scenario 'asks a question with errors' do
-      click_on 'Ask'
-
-      expect(page).to have_content "Title can't be blank"
-    end
   end
 
   scenario 'Unauthenticated user tries to ask a question' do
@@ -38,34 +32,5 @@ feature 'User can create question', %q{
     click_on 'Ask question'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
-  end
-end
-
-feature 'Users can show questions and answers', %q{
-  All users able to view questions and answers
-} do
-
-  given!(:answer_with_question) { create(:answer, :with_question) }
-
-  scenario 'Show list of questions' do
-    visit questions_path
-
-    expect(page).to have_content 'MyString'
-    expect(page).to have_content 'MyText'
-  end
-
-  scenario 'Show question' do
-    visit question_path(answer_with_question.question)
-
-    expect(page).to have_content 'MyString'
-    expect(page).to have_content 'MyText'
-  end
-
-  scenario 'Show answer inside question page' do
-    visit question_path(answer_with_question.question)
-
-    expect(page).to have_content 'MyString'
-    expect(page).to have_content 'MyText'
-    expect(page).to have_content 'MyAnswerText'
   end
 end
