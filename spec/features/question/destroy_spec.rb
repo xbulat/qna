@@ -7,20 +7,30 @@ feature 'Users can destroy question', %q{
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
 
-  scenario 'Author tries to delete question' do
-    sign_in(question.user)
+  describe 'Authenticated user' do
+    scenario 'tries to delete question' do
+      sign_in(question.user)
 
-    visit questions_path
-    click_link('Delete', href: question_path(question))
+      visit questions_path
+      click_link('Delete', href: question_path(question))
 
-    expect(page).to have_no_content 'MyString'
-    expect(page).to have_no_content 'MyText'
+      expect(page).to have_content 'Your question has been deleted.'
+      expect(page).to have_no_content 'MyString'
+      expect(page).to have_no_content 'MyText'
+    end
+
+    scenario 'tries to delete not-owned question' do
+      sign_in(user)
+      visit questions_path
+
+      expect(page).to have_no_content 'Delete'
+    end
   end
 
-  scenario 'Author tries to delete not-owned question' do
-    sign_in(user)
-    visit questions_path
-
-    expect(page).to have_no_content 'Delete'
+  describe 'Not authenticated user' do
+    scenario 'tries to delete question' do
+      visit questions_path
+      expect(page).to have_no_content 'Delete'
+    end
   end
 end

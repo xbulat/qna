@@ -23,6 +23,12 @@ feature 'User can create answer', %q{
       expect(page).to have_content 'Your answer successfully created.'
       expect(page).to have_content 'MyAnswerText'
     end
+
+    scenario 'asks answer with wrong form' do
+      click_on 'Post Your Answer'
+
+      expect(page).to have_content "Body can't be blank"
+    end
   end
 
   scenario 'Unauthenticated user tries to post answer' do

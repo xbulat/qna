@@ -25,6 +25,13 @@ feature 'User can create question', %q{
       expect(page).to have_content 'Test question'
       expect(page).to have_content 'text text text'
     end
+
+    scenario 'asks question with wrong form' do
+      click_on 'Ask'
+
+      expect(page).to have_content "Title can't be blank"
+      expect(page).to have_content "Body can't be blank"
+    end
   end
 
   scenario 'Unauthenticated user tries to ask a question' do

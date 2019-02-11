@@ -7,20 +7,6 @@ RSpec.describe AnswersController, type: :controller do
 
   let(:answer_with_question) { create(:answer, :with_question, user: user)}
 
-  describe 'GET #index' do
-    let(:answers) { create_list(:answer, 5, question: question, user: user) }
-
-    before { get :index, params: { question_id: question } }
-
-    it 'populates an array of all answers of question' do
-      expect(controller.answers).to eq answers
-    end
-
-    it 'renders index view' do
-      expect(response).to render_template :index
-    end
-  end
-
   describe 'POST #create' do
     before { login(user) }
 
@@ -81,7 +67,7 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       it 'deletes the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(0)
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end
 
       it 'redirect to question#show' do
