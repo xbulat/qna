@@ -1,0 +1,10 @@
+table
+  thead
+    tr
+      th Title
+      th Body
+      th Action
+  tbody
+  = render questions
+
+p= link_to 'Ask question', new_question_path
