@@ -7,6 +7,10 @@ FactoryBot.define do
       body { nil }
     end
 
+    trait :best do
+      best { true }
+    end
+
     trait :valid do
       body { "New Answers" }
     end

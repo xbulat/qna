@@ -4,14 +4,20 @@ h2= "Author: #{question.user.email}"
 p= question.body
 
 h2 Answers
+.answer-errors
 table
   thead
     tr
+      th BestFlag
       th Author
       th Body
       th Action
-  tbody
-  = render question.answers
+  tbody.answers
+    = render question.answers
+
 
 h3 Add Answer
-= render 'answers/form'
+.new-answer
+  = render 'answers/form'
+
+= link_to 'Back', questions_path

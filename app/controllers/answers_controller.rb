@@ -1,9 +1,9 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
 
-  expose :question
-  expose :answers, from: :question
   expose :answer
+  expose :question
+  expose :answers, -> { Answer.where(question: answer.question) }
 
   def create
     @answer = question.answers.new(answer_params)
@@ -13,6 +13,14 @@ class AnswersController < ApplicationController
       redirect_to @answer.question, notice: 'Your answer successfully created.'
     else
       render 'questions/show'
+    end
+  end
+
+  def update
+    if (answer_params.key?(:best) && current_user.author_of?(answer.question)) ||
+        current_user.author_of?(answer)
+
+      answer.update(answer_params)
     end
   end
 
@@ -30,6 +38,6 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, :best)
   end
 end

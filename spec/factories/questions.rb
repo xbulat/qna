@@ -9,8 +9,8 @@ FactoryBot.define do
     end
 
     trait :sequence do
-      sequence(:title) { |n| "Title#{n}" }
-      sequence(:body) { |n| "Question#{n}" }
+      sequence(:title) { |n| "MyTitle#{n}" }
+      sequence(:body) { |n| "MyQuestion#{n}" }
     end
   end
 end
