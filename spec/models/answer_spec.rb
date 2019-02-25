@@ -12,7 +12,7 @@ RSpec.describe Answer, type: :model do
      let!(:new_best_answer) { create(:answer, question: question) }
 
      it 'set new best answer' do
-       new_best_answer.update(best: true)
+       new_best_answer.make_best
 
        expect(new_best_answer.reload.best).to be_truthy
        expect(old_best_answer.reload.best).to be_falsey

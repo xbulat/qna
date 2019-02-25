@@ -20,8 +20,8 @@ feature 'Users can edit questions', %q{
         fill_in 'Body', with: 'MyEditedBody'
         click_on 'Edit Question'
 
-        expect(page).to have_no_content 'MyEditedBody'
-        expect(page).to have_no_content 'MyEditedTitle'
+        expect(page).to have_content 'MyEditedBody'
+        expect(page).to have_content 'MyEditedTitle'
       end
     end
 

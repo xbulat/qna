@@ -17,11 +17,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if (answer_params.key?(:best) && current_user.author_of?(answer.question)) ||
-        current_user.author_of?(answer)
-
-      answer.update(answer_params)
-    end
+    answer.update(answer_params) if current_user.author_of?(answer)
   end
 
   def destroy
@@ -33,6 +29,10 @@ class AnswersController < ApplicationController
     end
 
     redirect_to answer.question, notice: flash_msg
+  end
+
+  def best
+    answer.make_best if current_user.author_of?(answer.question)
   end
 
   private

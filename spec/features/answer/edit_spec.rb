@@ -21,7 +21,7 @@ feature 'Users can edit answers', %q{
         fill_in 'Body', with: 'MyEditedBody'
         click_on 'Edit Answer'
 
-        expect(page).to have_no_content 'MyEditedBody'
+        expect(page).to have_content 'MyEditedBody'
       end
     end
 

@@ -1,23 +1,20 @@
 - if answer.persisted?
-  tr
+  tr class=["answer-id-#{answer.id}"]
     td
       - if current_user&.author_of?(answer.question) && !answer.best
-        = form_with model: [answer] do |f|
-          = f.hidden_field :best, value: 1
-          = f.submit 'Best!'
+        = link_to 'Best!', best_answer_path(answer), method: :patch, remote: true
       - else
-        = answer.best
-
+      span.best-answer
+        = best_answer_symbol(answer)
     td = answer.user.email
     td = answer.body
     - if current_user&.author_of?(answer)
-      td = link_to 'Delete', answer_path(answer), method: :delete, remote: true
-      td = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-
-- if current_user&.author_of?(answer)
-  tr
-    td
-      = form_with model: [answer], class: 'hidden', html: { id: "edit-answer-#{answer.id}"} do |f|
-        = f.label :body
-        = f.text_area :body
-        = f.submit 'Edit Answer'
+      td
+        => link_to 'Delete', answer_path(answer), method: :delete, remote: true
+        | |
+        =< link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+      td
+        = form_with model: [answer], class: 'hidden', html: { id: "edit-answer-#{answer.id}"} do |f|
+          = f.label :body
+          = f.text_area :body
+          = f.submit 'Edit Answer'
