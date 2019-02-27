@@ -3,7 +3,7 @@ class AnswersController < ApplicationController
 
   expose :answer
   expose :question
-  expose :answers, -> { Answer.where(question: answer.question) }
+  expose :answers, from: :question
 
   def create
     @answer = question.answers.new(answer_params)
@@ -17,7 +17,11 @@ class AnswersController < ApplicationController
   end
 
   def update
-    answer.update(answer_params) if current_user.author_of?(answer)
+    if current_user.author_of?(answer)
+      answer.update(answer_params)
+    else
+      render status: :forbidden
+    end
   end
 
   def destroy
@@ -32,12 +36,17 @@ class AnswersController < ApplicationController
   end
 
   def best
-    answer.make_best if current_user.author_of?(answer.question)
+    if current_user.author_of?(answer.question)
+      answer.make_best
+      @answers = answer.question.answers
+    else
+      render status: :forbidden
+    end
   end
 
   private
 
   def answer_params
-    params.require(:answer).permit(:body, :best)
+    params.require(:answer).permit(:body)
   end
 end

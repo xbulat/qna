@@ -29,14 +29,14 @@ feature 'Users can edit questions', %q{
       sign_in(user)
       visit questions_path
 
-      expect(page).to have_no_content 'Edit Question'
+      expect(page).to have_no_link 'Edit Question'
     end
   end
 
   describe 'Not authenticated user' do
     scenario 'tries to edit question' do
       visit questions_path
-      expect(page).to have_no_content 'Edit Question'
+      expect(page).to have_no_link 'Edit Question'
     end
   end
 end

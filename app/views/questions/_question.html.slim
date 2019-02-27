@@ -7,7 +7,7 @@ tr class=["question-id-#{question.id}"]
       ||
       =< link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
     td
-      = form_with model: [question], class: 'hidden', html: { id: "edit-question-#{question.id}"} do |f|
+      = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}"} do |f|
         = f.label :title
         = f.text_field :title
         = f.label :body

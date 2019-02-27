@@ -26,14 +26,14 @@ feature 'Users can edit answers', %q{
     end
 
     scenario 'tries to edit not-owned question' do
-      expect(page).to have_no_content 'Edit Answer'
+      expect(page).to have_no_link 'Edit Answer'
     end
   end
 
   describe 'Not authenticated user' do
     scenario 'tries to edit answer' do
       visit question_path(answer.question)
-      expect(page).to have_no_content 'Edit Answer'
+      expect(page).to have_no_link 'Edit Answer'
     end
   end
 end

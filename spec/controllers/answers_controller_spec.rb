@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
-  let(:answer)   { create(:answer) }
+  let(:answer)   { create(:answer, :with_question) }
   let(:user)   { create(:user) }
 
   let(:answer_with_question) { create(:answer, :with_question, user: user)}
@@ -104,18 +104,30 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :update
       end
     end
+
+    context 'not author with valid attributes' do
+      it 'does not change answer attributes' do
+        expect { patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js}.to_not change(answer, :body)
+      end
+
+      it 'renders status forbidden' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
+        expect(response.response_code).to eq(403)
+      end
+    end
+
   end
 
   describe 'PATCH #best' do
     before { login(user) }
 
     context 'set new best answer' do
-      let!(:best_answer) { create(:answer, question: question, best: 1) }
+      let!(:best_answer) { create(:answer, question: question, best: true) }
       let(:answers) { create_list(:answer, 5, user: user, question: question) }
 
       before do
         login(question.user)
-        patch :best, params: { id: answers.last, answer: { best: '1' } }, format: :js
+        patch :best, params: { id: answers.last }, format: :js
       end
 
       it 'path answer as best' do
@@ -130,12 +142,26 @@ RSpec.describe AnswersController, type: :controller do
         expect(best_answer.best).to be_falsey
       end
 
-      it 'best answers is first' do
-        expect(question.answers.first).to eq answers.last
-      end
-
       it 'render template' do
         expect(response).to render_template :best
+      end
+    end
+
+    context 'not author of question' do
+      let(:answer) { create(:answer, :with_question) }
+      let(:user) { create(:user) }
+
+      before do
+        login(user)
+        patch :best, params: { id: answer }, format: :js
+      end
+
+      it 'does not make the best answer' do
+        expect(answer.best).to be_falsey
+      end
+
+      it 'renders status forbidden' do
+        expect(response.response_code).to eq(403)
       end
     end
   end

@@ -30,7 +30,9 @@ feature 'Users can choose answer as the best', %q{
 
     scenario 'has only one the best answer', js: true do
       click_link('Best!', href: best_answer_path(new_best_answer))
-
+      click_link('Best!', href: best_answer_path(old_best_answer))
+      click_link('Best!', href: best_answer_path(new_best_answer))
+      
       expect(page).to have_content("★", count: 1)
     end
 

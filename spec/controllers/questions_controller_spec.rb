@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:user)     { create(:user) }
   let(:question) { create(:question, user: user) }
+  let(:not_author) { create(:user) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3, user: user) }
@@ -112,6 +113,23 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 're-renders edit view' do
         expect(response).to render_template :update
+      end
+    end
+
+    context 'not author with valid attributes' do
+      before { login(not_author) }
+
+      it 'does not change question attributes' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }, format: :js
+        question.reload
+
+        expect(question.title).to eq 'MyString'
+        expect(question.body).to eq 'MyText'
+      end
+
+      it 'renders status forbidden' do
+        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
+        expect(response.response_code).to eq(403)
       end
     end
   end
