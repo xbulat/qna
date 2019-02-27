@@ -14,31 +14,27 @@ RSpec.describe Answer, type: :model do
 
      let(:another_question_answer) { create(:answer, :with_question) }
 
-     it 'set new best answer' do
-       answer.make_best
+     before { answer.make_best }
 
+     it 'set new best answer' do
        expect(answer.reload.best).to be_truthy
      end
 
      it 'previos the best answer is not best' do
-       answer.make_best
-
        expect(old_best_answer.reload.best).to be_falsey
      end
 
      it 'question has only one the best answer' do
-       answer.make_best
        answer2.make_best
 
        expect(question.answers.where(best: true).count).to eq(1)
      end
 
      it 'each question is able to has the best answer' do
-       answer.make_best
        another_question_answer.make_best
 
-       expect(question.answers.where(best: true).count).to eq(1)
-       expect(another_question_answer.question.answers.where(best: true).count).to eq(1)
+       expect(answer.best).to be_truthy
+       expect(another_question_answer.best).to be_truthy
      end
    end
 end
