@@ -7,7 +7,7 @@ feature 'Users can show answers inside question page', %q{
   given(:question) { create(:question) }
   given!(:answers) { create_list(:answer, 5, :sequence, question: question) }
 
-  scenario 'Show answer inside question page' do
+  scenario 'Show answer inside question page', js:true do
     visit question_path(question)
 
     expect(page).to have_content(/MyAnswerText[1-5]+/, count: 5)

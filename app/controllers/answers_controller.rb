@@ -1,9 +1,9 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
 
+  expose :answer
   expose :question
   expose :answers, from: :question
-  expose :answer
 
   def create
     @answer = question.answers.new(answer_params)
@@ -16,6 +16,14 @@ class AnswersController < ApplicationController
     end
   end
 
+  def update
+    if current_user.author_of?(answer)
+      answer.update(answer_params)
+    else
+      render status: :forbidden
+    end
+  end
+
   def destroy
     if current_user.author_of?(answer)
       answer.destroy
@@ -25,6 +33,15 @@ class AnswersController < ApplicationController
     end
 
     redirect_to answer.question, notice: flash_msg
+  end
+
+  def best
+    if current_user.author_of?(answer.question)
+      answer.make_best
+      @answers = answer.question.answers
+    else
+      render status: :forbidden
+    end
   end
 
   private
