@@ -1,8 +1,11 @@
 = render 'shared/errors', resource: question
-
-= form_with model: question do |f|
-  p= f.label :title
-  = f.text_field :title
-  p= f.label :body
-  = f.text_area :body
-  p= f.submit 'Ask'
+div class="ui raised very padded text container segment"
+  = form_with model: question, class: "ui form" do |f|
+    div.field
+      = f.label :title
+      = f.text_field :title
+    div.field
+      = f.label :body
+      = f.text_area :body
+    div.field
+      = f.submit 'Ask', class: "ui button primary"

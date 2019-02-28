@@ -2,5 +2,4 @@
 $('.answer-errors').html('<%= render 'shared/errors', resource: answer %>');
 <% else %>
 $('<%= ".answer-id-#{answer.id}" %>').replaceWith('<%= j render answer %>');
-$('<%= "form#edit-answer-#{answer.id}" %>').addClass('hidden');
 <% end %>

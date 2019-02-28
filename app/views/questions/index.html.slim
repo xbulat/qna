@@ -1,12 +1,13 @@
 .question-errors
-table
+table class=["ui fixed table questions"]
   thead
     tr
       th Title
       th Body
       th Action
+  = render questions
+  tfoot.full-width
+    tr
       th
-  tbody.questions
-    = render questions
-
-p= link_to 'Ask question', new_question_path
+        = link_to 'Ask question', new_question_path, class: 'ui button primary'
+      th colspan=2
