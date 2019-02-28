@@ -1,15 +1,19 @@
-tr class=["question-id-#{question.id}"]
-  td = link_to question.title, question_path(question)
-  td = question.body
-  - if current_user&.author_of?(question)
-    td
-      => link_to 'Delete', question_path(question), method: :delete, remote: true
-      ||
-      =< link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
-    td
-      = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}"} do |f|
-        = f.label :title
-        = f.text_field :title
-        = f.label :body
-        = f.text_area :body
-        = f.submit 'Edit Question'
+tbody class=["question-id-#{question.id}"]
+  tr
+    td = link_to question.title, question_path(question)
+    td = truncate(question.body, length: 35)
+    - if current_user&.author_of?(question)
+      td class=["ui center aligned"]
+        div class=["ui buttons mini"]
+          = link_to 'Delete', question_path(question), method: :delete, remote: true, class: 'ui button'
+          = link_to 'Edit', '#', class: 'edit-question-link ui button', data: { question_id: question.id }
+  tr class=["edit-question-#{question.id} hidden"]
+    td colspan=3
+      = form_with model: question, class: "ui form" do |f|
+        div.field
+          = f.label :title
+          = f.text_field :title
+        div.field
+          = f.label :body
+          = f.text_area :body
+        = f.submit 'Edit Question', class: "ui mini button"

@@ -1,5 +1,7 @@
 = render 'shared/errors', resource: @answer
-= form_with model: [question, answer] do |f|
-  p= f.label :body
-  = f.text_area :body
-  p= f.submit 'Post Your Answer'
+= form_with model: [question, answer], class: "ui form" do |f|
+  div.field
+    = f.label :body
+    = f.text_area :body
+  div.field
+    = f.submit 'Post Your Answer', class: "ui button primary"

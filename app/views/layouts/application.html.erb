@@ -11,8 +11,9 @@
 
   <body>
     <%= render 'shared/navbar' %>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <%= semantic_flash %>
+    <div class="ui two column centered grid">
+      <div class="column"><%= yield %><div/>
+    <div/>
   </body>
 </html>

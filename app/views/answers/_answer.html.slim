@@ -1,20 +1,25 @@
 - if answer.persisted?
-  tr class=["answer-id-#{answer.id}"]
-    td
-      - if current_user&.author_of?(answer.question) && !answer.best
-        = link_to 'Best!', best_answer_path(answer), method: :patch, remote: true
-      - else
-      span.best-answer
-        = best_answer_symbol(answer)
-    td = answer.user.email
-    td = answer.body
-    - if current_user&.author_of?(answer)
-      td
-        => link_to 'Delete', answer_path(answer), method: :delete, remote: true
-        | |
-        =< link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-      td
-        = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}"} do |f|
+  div class="ui comments answer-id-#{answer.id}"
+    div.comment
+      div.avatar
+        i class="large icon #{best_answer_icon(answer)}"
+      div.content
+        = link_to answer.user.email, '#', class: 'author'
+        div.metadata
+          span.date = time_ago_in_words(answer.created_at)
+        div.text
+          = answer.body
+        div.actions
+          - if current_user&.author_of?(answer)
+            = link_to 'Delete', answer_path(answer), method: :delete, remote: true
+            = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+          - if current_user&.author_of?(answer.question) && !answer.best
+            = link_to 'Best!', best_answer_path(answer), method: :patch, remote: true
+
+    div class=["edit-answer-#{answer.id} hidden"]
+      = form_with model: answer, class: "ui reply form" do |f|
+        div.field
           = f.label :body
           = f.text_area :body
-          = f.submit 'Edit Answer'
+        div.field
+          = f.submit 'Edit Answer', class: 'ui button primary mini'

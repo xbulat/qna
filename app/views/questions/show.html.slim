@@ -1,24 +1,24 @@
-h1= question.title
-h2= "Author: #{question.user.email}"
+div class="ui raised very padded text container segment"
+  div class="ui header"
+    = question.title
+  p
+    = question.body
+  p
+   | Author: #{question.user.email}
 
-p= question.body
 
-h2 Answers
+h3 class="ui horizontal divider header"
+  i class="comments icon"
+  | Answers
 .answer-errors
-table
-  thead
-    tr
-      th Best
-      th Author
-      th Body
-      th Action
-      th 
-  tbody.answers
-    = render question.answers
+.answers
+  = render question.answers
 
+h3 class="ui horizontal divider header"
+  i class="bullhorn icon"
+  | Add Answer
 
-h3 Add Answer
 .new-answer
   = render 'answers/form'
-
-= link_to 'Back', questions_path
+br
+  = link_to 'Back', questions_path, class: "ui button basic mini"
