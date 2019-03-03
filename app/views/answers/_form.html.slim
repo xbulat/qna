@@ -4,4 +4,7 @@
     = f.label :body
     = f.text_area :body
   div.field
+    = f.label :files
+    = f.file_field :files, multiple: true
+  div.field
     = f.submit 'Post Your Answer', class: "ui button primary"
