@@ -8,4 +8,7 @@ div class="ui raised very padded text container segment"
       = f.label :body
       = f.text_area :body
     div.field
+      = f.label :files
+      = f.file_field :files, multiple: true
+    div.field
       = f.submit 'Ask', class: "ui button primary"

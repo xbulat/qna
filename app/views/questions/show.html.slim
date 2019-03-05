@@ -5,6 +5,16 @@ div class="ui raised very padded text container segment"
     = question.body
   p
    | Author: #{question.user.email}
+  - if question.files.attached?
+    div class="ui relaxed divided list"
+      - question.files.each do |file|
+        div class="item"
+          - if current_user&.author_of?(question)
+            div class="right floated content"
+              = link_to 'Purge', attachment_path(file), method: :delete, remote: true
+          i class="file middle aligned icon"
+          div class="content"
+            = link_to file.filename.to_s, url_for(file), class: 'header'
 
 
 h3 class="ui horizontal divider header"

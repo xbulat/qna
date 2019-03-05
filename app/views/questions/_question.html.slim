@@ -1,13 +1,13 @@
-tbody class=["question-id-#{question.id}"]
+tbody class="question-id-#{question.id}"
   tr
     td = link_to question.title, question_path(question)
     td = truncate(question.body, length: 35)
     - if current_user&.author_of?(question)
-      td class=["ui center aligned"]
-        div class=["ui buttons mini"]
+      td class="ui center aligned"
+        div class="ui buttons mini"
           = link_to 'Delete', question_path(question), method: :delete, remote: true, class: 'ui button'
           = link_to 'Edit', '#', class: 'edit-question-link ui button', data: { question_id: question.id }
-  tr class=["edit-question-#{question.id} hidden"]
+  tr class="edit-question-#{question.id} hidden"
     td colspan=3
       = form_with model: question, class: "ui form" do |f|
         div.field
@@ -16,4 +16,7 @@ tbody class=["question-id-#{question.id}"]
         div.field
           = f.label :body
           = f.text_area :body
+        div.field
+          = f.label :files
+          = f.file_field :files, multiple: true, direct_upload: true
         = f.submit 'Edit Question', class: "ui mini button"

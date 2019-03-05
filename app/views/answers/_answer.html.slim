@@ -15,11 +15,25 @@
             = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
           - if current_user&.author_of?(answer.question) && !answer.best
             = link_to 'Best!', best_answer_path(answer), method: :patch, remote: true
+        - if answer.files.attached?
+          div class="ui relaxed divided list"
+            - answer.files.each do |file|
+              div class="item"
+                - if current_user&.author_of?(answer)
+                  div class="right floated content"
+                    = link_to 'Purge', attachment_path(file), method: :delete, remote: true
+                i class="file middle aligned icon"
+                div class="content"
+                  = link_to file.filename.to_s, url_for(file), class: 'header'
 
-    div class=["edit-answer-#{answer.id} hidden"]
+
+    div class="edit-answer-#{answer.id} hidden"
       = form_with model: answer, class: "ui reply form" do |f|
         div.field
           = f.label :body
           = f.text_area :body
+        div.field
+          = f.label :files
+          = f.file_field :files, multiple: true, direct_upload: true
         div.field
           = f.submit 'Edit Answer', class: 'ui button primary mini'

@@ -19,6 +19,10 @@ FactoryBot.define do
       question
     end
 
+    trait :with_file do
+      files { Rack::Test::UploadedFile.new(Rails.root.join('README.md'), 'text/plain') }
+    end
+
     trait :sequence do
       sequence(:body) { |n| "MyAnswerText#{n}" }
     end
