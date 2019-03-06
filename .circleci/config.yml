@@ -1,0 +1,88 @@
+version: 2
+jobs:
+  tests:
+    parallelism: 3
+    docker:
+      - image: circleci/ruby:2.5.3-stretch-node-browsers-legacy
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_USER: root
+          RAILS_ENV: test
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_DATABASE: qna_test
+          MYSQL_USER: root
+    steps:
+      - checkout
+      - run:
+          name: Which bundler?
+          command: bundle -v
+      - restore_cache:
+          keys:
+            - rails-bundle-v2-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install
+      - save_cache:
+          key: rails-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+      - run:
+          name: Database setup
+          command: |
+            cp config/database.yml.deploy config/database.yml
+            bin/rails db:schema:load --trace
+      - run:
+          name: Run rspec in parallel
+          command: |
+            bundle exec rspec --out test_results/rspec.xml \
+                              --format progress \
+                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+      - store_test_results:
+          path: test_results
+
+  build-image:
+    docker:
+      - image: xbulat/kaniko-alpine
+    working_directory: /workspace
+    steps:
+      - checkout
+      - run:
+          name: Export credentials
+          command: |
+            echo ${GKE_ENCODE_JSON} | base64 -d > ${GOOGLE_APPLICATION_CREDENTIALS}
+      - run:
+          name: Build docker image with kaniko
+          command: |
+            /usr/local/bin/executor \
+              --cache=true \
+              --context=/workspace \
+              --build-arg SECRET_KEY_BASE=${SECRET_KEY_BASE} \
+              --destination=eu.gcr.io/${GKE_PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_BRANCH}
+
+workflows:
+  version: 2
+  tests_and_build:
+    jobs:
+      - build-image
+
+# workflows:
+#   version: 2
+#   tests_and_build:
+#     jobs:
+#       - tests
+#       - build-image:
+#           requires:
+#             - tests
+#           filters:
+#             branches:
+#               only:
+#                 - development
+#                 - staging
+#                 - production
