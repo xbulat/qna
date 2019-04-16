@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_01_184550) do
+ActiveRecord::Schema.define(version: 2019_04_14_135120) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -44,6 +44,28 @@ ActiveRecord::Schema.define(version: 2019_03_01_184550) do
     t.index ["user_id"], name: "index_answers_on_user_id"
   end
 
+  create_table "badges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.bigint "question_id"
+    t.bigint "answer_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answer_id"], name: "index_badges_on_answer_id"
+    t.index ["question_id"], name: "index_badges_on_question_id"
+    t.index ["user_id"], name: "index_badges_on_user_id"
+  end
+
+  create_table "links", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "linkable_type"
+    t.bigint "linkable_id"
+    t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable_type_and_linkable_id"
+  end
+
   create_table "questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.text "body"
@@ -68,5 +90,8 @@ ActiveRecord::Schema.define(version: 2019_03_01_184550) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
+  add_foreign_key "badges", "answers"
+  add_foreign_key "badges", "questions"
+  add_foreign_key "badges", "users"
   add_foreign_key "questions", "users"
 end

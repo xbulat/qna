@@ -2,6 +2,7 @@ div class=["ui large menu"]
   span.item
     i class=["question icon"]
   = link_to 'Home', root_path, class: "active item"
+  = link_to 'Badges', badges_path, class: "item"
   div class=["right menu"]
     - if user_signed_in?
       = render 'shared/navbar_logged'

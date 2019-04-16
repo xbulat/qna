@@ -1,0 +1,8 @@
+div.nested-fields
+  div.field
+    = f.label :name, 'Link name'
+    = f.text_field :name
+  div.field
+    = f.label :url
+    = f.text_field :url
+  = link_to_remove_association "remove link", f, class: "ui button basic mini right floated red"
