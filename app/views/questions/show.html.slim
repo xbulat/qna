@@ -15,6 +15,21 @@ div class="ui raised very padded text container segment"
           i class="file middle aligned icon"
           div class="content"
             = link_to file.filename.to_s, url_for(file), class: 'header'
+  - if question.links.any?
+    div class="ui relaxed divided list"
+      - question.links.each do |link|
+        div class="item"
+          - if current_user&.author_of?(question)
+            div class="right floated content"
+              = link_to "Purge", link_path(link.id), method: :delete, remote: true
+          - if link.gist?
+            i class="github middle aligned icon"
+            div class="content"
+              = render 'shared/gists', gists: link.gist_content
+          - else
+            i class="linkify middle aligned icon"
+            div class="content"
+              = link_to link.name, link.url, class: 'header'
 
 
 h3 class="ui horizontal divider header"

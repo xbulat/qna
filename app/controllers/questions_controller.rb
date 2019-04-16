@@ -5,6 +5,15 @@ class QuestionsController < ApplicationController
   expose :question, scope: ->{ Question.with_attached_files }
   expose :answer, -> { question.answers.new }
 
+  def new
+    question.links.build
+    question.badge ||= Badge.new
+  end
+
+  def show
+    answer.links.build
+  end
+
   def create
     question.user = current_user
 
@@ -36,6 +45,11 @@ class QuestionsController < ApplicationController
 
   private
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title,
+                                     :body,
+                                     files: [],
+                                     links_attributes: [:name, :url, :_destroy],
+                                     badge_attributes: [:title, :image, :_destroy]
+                                    )
   end
 end

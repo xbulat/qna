@@ -9,5 +9,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :links, only: :destroy
   resources :attachments, only: :destroy
+  resources :badges, only: :index
 end

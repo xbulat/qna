@@ -10,5 +10,24 @@ div class="ui raised very padded text container segment"
     div.field
       = f.label :files
       = f.file_field :files, multiple: true
+    h4 class="ui horizontal divider header"
+      i class="linkify icon"
+      | Links
+    = f.fields_for :links do |link|
+      = render 'shared/links', f: link
+    div.links
+      = link_to_add_association 'add link', f, :links, partial: 'shared/links', class: "ui button basic mini"
+    h4 class="ui horizontal divider header"
+      i class="certificate icon"
+      | Badge
+    div.badge
+      = f.fields_for :badge do |b|
+        div.field
+          = b.label :title, 'Title'
+          = b.text_field :title
+        div.field
+          = b.label :image
+          = b.file_field :image, direct_upload: true
+    div class="ui section divider"
     div.field
       = f.submit 'Ask', class: "ui button primary"

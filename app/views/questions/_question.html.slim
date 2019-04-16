@@ -19,4 +19,12 @@ tbody class="question-id-#{question.id}"
         div.field
           = f.label :files
           = f.file_field :files, multiple: true, direct_upload: true
+        h4 class="ui horizontal divider header"
+          i class="linkify icon"
+          | Links
+        = f.fields_for :links do |link|
+          = render 'shared/links', f: link
+        div.links
+          = link_to_add_association 'add link', f, :links, partial: 'shared/links', class: "ui button basic mini"
+        p
         = f.submit 'Edit Question', class: "ui mini button"

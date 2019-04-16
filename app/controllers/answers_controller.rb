@@ -5,6 +5,10 @@ class AnswersController < ApplicationController
   expose :question
   expose :answers, from: :question
 
+  def new
+    answer.links.build
+  end
+
   def create
     @answer = question.answers.new(answer_params)
     @answer.user = current_user
@@ -47,6 +51,9 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [])
+    params.require(:answer).permit(:body,
+                                   files: [],
+                                   links_attributes: [:name, :url]
+                                  )
   end
 end

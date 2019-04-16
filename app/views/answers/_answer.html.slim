@@ -25,6 +25,21 @@
                 i class="file middle aligned icon"
                 div class="content"
                   = link_to file.filename.to_s, url_for(file), class: 'header'
+        - if answer.links.any?
+          div class="ui relaxed divided list"
+            - answer.links.each do |link|
+              div class="item"
+                - if current_user&.author_of?(answer)
+                  div class="right floated content"
+                    = link_to "Purge", link_path(link.id), method: :delete, remote: true
+                - if link.gist?
+                  i class="github middle aligned icon"
+                  div class="content"
+                    = render 'shared/gists', gists: link.gist_content
+                - else
+                  i class="linkify middle aligned icon"
+                  div class="content"
+                    = link_to link.name, link.url, class: 'header'
 
 
     div class="edit-answer-#{answer.id} hidden"
@@ -36,4 +51,12 @@
           = f.label :files
           = f.file_field :files, multiple: true, direct_upload: true
         div.field
+        h4 class="ui horizontal divider header"
+          i class="linkify icon"
+          | Links
+        = f.fields_for :links do |link|
+          = render 'shared/links', f: link
+        div.links
+          = link_to_add_association 'add link', f, :links, partial: 'shared/links', class: "ui button basic mini"
+        div class="ui section divider"
           = f.submit 'Edit Answer', class: 'ui button primary mini'

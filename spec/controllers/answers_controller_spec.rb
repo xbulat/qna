@@ -121,8 +121,9 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #best' do
     before { login(user) }
 
-    context 'set new best answer' do
+    context 'set new the best answer' do
       let!(:best_answer) { create(:answer, question: question, best: true) }
+      let!(:badge) { create(:badge, question: question, user: question.user) }
       let(:answers) { create_list(:answer, 5, user: user, question: question) }
 
       before do
@@ -136,10 +137,16 @@ RSpec.describe AnswersController, type: :controller do
         expect(answers.last.best).to be_truthy
       end
 
-      it 'previous best answer is reset' do
+      it 'previous the best answer is reset' do
         best_answer.reload
 
         expect(best_answer.best).to be_falsey
+      end
+
+      it 'author of the best answer got badge' do
+        badge.reload
+
+        expect(badge.user).to eq answers.last.user
       end
 
       it 'render template' do

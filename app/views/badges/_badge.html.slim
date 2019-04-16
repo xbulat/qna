@@ -1,0 +1,6 @@
+tbody
+  tr
+    td = image_tag(badge.image, height: '128', width: '128')
+    td = badge.title
+    td = link_to badge.question.title, question_path(badge.question)
+    td = link_to truncate(badge.answer.body), question_path(badge.question)
