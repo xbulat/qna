@@ -12,6 +12,9 @@ FactoryBot.define do
       files { Rack::Test::UploadedFile.new(Rails.root.join('README.md'), 'text/plain') }
     end
 
+    trait :complete do
+    end
+
     trait :sequence do
       sequence(:title) { |n| "MyTitle#{n}" }
       sequence(:body) { |n| "MyQuestion#{n}" }

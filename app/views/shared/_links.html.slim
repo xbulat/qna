@@ -1,8 +1,15 @@
-div.nested-fields
-  div.field
-    = f.label :name, 'Link name'
-    = f.text_field :name
-  div.field
-    = f.label :url
-    = f.text_field :url
-  = link_to_remove_association "remove link", f, class: "ui button basic mini right floated red"
+- if object.links.any?
+  div class="ui relaxed divided list"
+    - object.links.each do |link|
+      div class="item"
+        - if current_user&.author_of?(object)
+          div class="right floated content"
+            = link_to "Purge", link_path(link.id), method: :delete, remote: true
+        - if link.gist?
+          i class="github middle aligned icon"
+          div class="content"
+            = render 'shared/gists', gists: link.gist_content
+        - else
+          i class="linkify middle aligned icon"
+          div class="content"
+            = link_to link.name, link.url, class: 'header'

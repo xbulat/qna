@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  include Votes
+
   before_action :authenticate_user!
 
   expose :answer
