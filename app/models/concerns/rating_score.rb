@@ -21,6 +21,6 @@ module RatingScore
   end
 
   def current_rating
-    ratings.pluck(:score).sum
+    ratings.sum(:score)
   end
 end
