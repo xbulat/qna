@@ -19,11 +19,11 @@ feature 'Users can choose answer as the best', %q{
     scenario 'choose the best answer', js: true do
       click_link('Best!', href: best_answer_path(new_best_answer))
 
-      within ".answer-id-#{new_best_answer.id}" do
+      within ".comments.answer-id-#{new_best_answer.id}" do
         expect(page).to have_css('.trophy')
       end
 
-      within ".answer-id-#{old_best_answer.id}" do
+      within ".comments.answer-id-#{old_best_answer.id}" do
         expect(page).to have_css('.comment')
       end
     end
@@ -39,7 +39,7 @@ feature 'Users can choose answer as the best', %q{
     scenario 'the best answer is always first', js: true do
       within all('.answers').first { expect(page).to have_content old_best_answer.body }
 
-      within ".answer-id-#{new_best_answer.id}" do
+      within ".comments.answer-id-#{new_best_answer.id}" do
         click_link('Best!', href: best_answer_path(new_best_answer))
       end
 

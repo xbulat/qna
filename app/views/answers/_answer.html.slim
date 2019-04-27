@@ -9,38 +9,18 @@
           span.date = time_ago_in_words(answer.created_at)
         div.text
           = answer.body
+        div class="votes-answer-id-#{answer.id}"
+          div.votes-rating
+            = show_rating_result(answer).html_safe
         div.actions
           - if current_user&.author_of?(answer)
             = link_to 'Delete', answer_path(answer), method: :delete, remote: true
             = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
           - if current_user&.author_of?(answer.question) && !answer.best
             = link_to 'Best!', best_answer_path(answer), method: :patch, remote: true
-        - if answer.files.attached?
-          div class="ui relaxed divided list"
-            - answer.files.each do |file|
-              div class="item"
-                - if current_user&.author_of?(answer)
-                  div class="right floated content"
-                    = link_to 'Purge', attachment_path(file), method: :delete, remote: true
-                i class="file middle aligned icon"
-                div class="content"
-                  = link_to file.filename.to_s, url_for(file), class: 'header'
-        - if answer.links.any?
-          div class="ui relaxed divided list"
-            - answer.links.each do |link|
-              div class="item"
-                - if current_user&.author_of?(answer)
-                  div class="right floated content"
-                    = link_to "Purge", link_path(link.id), method: :delete, remote: true
-                - if link.gist?
-                  i class="github middle aligned icon"
-                  div class="content"
-                    = render 'shared/gists', gists: link.gist_content
-                - else
-                  i class="linkify middle aligned icon"
-                  div class="content"
-                    = link_to link.name, link.url, class: 'header'
-
+        = render 'shared/votes', c: answer.class.to_s.underscore, object: answer
+        = render 'shared/attachments', object: answer
+        = render 'shared/links', object: answer
 
     div class="edit-answer-#{answer.id} hidden"
       = form_with model: answer, class: "ui reply form" do |f|
@@ -55,8 +35,8 @@
           i class="linkify icon"
           | Links
         = f.fields_for :links do |link|
-          = render 'shared/links', f: link
+          = render 'shared/form_links', f: link
         div.links
-          = link_to_add_association 'add link', f, :links, partial: 'shared/links', class: "ui button basic mini"
+          = link_to_add_association 'add link', f, :links, partial: 'shared/form_links', class: "ui button basic mini"
         div class="ui section divider"
           = f.submit 'Edit Answer', class: 'ui button primary mini'

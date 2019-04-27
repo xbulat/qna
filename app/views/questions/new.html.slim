@@ -14,9 +14,9 @@ div class="ui raised very padded text container segment"
       i class="linkify icon"
       | Links
     = f.fields_for :links do |link|
-      = render 'shared/links', f: link
+      = render 'shared/form_links', f: link
     div.links
-      = link_to_add_association 'add link', f, :links, partial: 'shared/links', class: "ui button basic mini"
+      = link_to_add_association 'add link', f, :links, partial: 'shared/form_links', class: "ui button basic mini"
     h4 class="ui horizontal divider header"
       i class="certificate icon"
       | Badge
