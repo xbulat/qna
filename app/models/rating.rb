@@ -1,14 +1,6 @@
 class Rating < ApplicationRecord
   belongs_to :linkable, polymorphic: true
-  has_many :votes
+  belongs_to :user
 
-  validates :score, numericality: true
-
-  def likes
-    votes.where(like: true).count
-  end
-
-  def dislikes
-    votes.where(like: false).count
-  end
+  validates :score, inclusion: { in: [-1, 1] }
 end

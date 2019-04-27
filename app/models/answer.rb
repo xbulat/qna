@@ -1,7 +1,7 @@
 class Answer < ApplicationRecord
   include Attachment
   include RatingScore
-  
+
   belongs_to :question
   belongs_to :user
   has_one :badge

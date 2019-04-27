@@ -1,8 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Rating, type: :model do
- it { should belong_to :linkable }
- it { should have_many(:votes) }
+  it { should belong_to :linkable }
+  it { should belong_to :user }
 
- it { should validate_numericality_of :score }
+  it do
+    should validate_inclusion_of(:score).
+      in_array([-1, 1])
+  end
 end

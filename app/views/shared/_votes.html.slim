@@ -5,10 +5,10 @@
           = link_to 'Revoke Vote', polymorphic_path(object, action: :revoke), method: :delete, remote: true, data: { type: :json }
         div class="votes-actions #{"hidden" if object.voted_of?(current_user)}"
           div class="ui left labeled button mini" tabindex="0"
-            =< link_to object.rating.dislikes, polymorphic_path(object, action: :dislike), method: :post, remote: true, data: { type: :json }, class: "ui basic label"
+            =< link_to object.dislikes, polymorphic_path(object, action: :dislike), method: :post, remote: true, data: { type: :json }, class: "ui basic label"
             div class="ui button mini"
               i class="thumbs down icon"
           div class="ui labeled button mini" tabindex="0"
             div class="ui button mini"
               i class="thumbs up icon"
-            =< link_to object.rating.likes, polymorphic_path(object, action: :like), method: :post, remote: true, data: { type: :json }, class: "ui basic label"
+            =< link_to object.likes, polymorphic_path(object, action: :like), method: :post, remote: true, data: { type: :json }, class: "ui basic label"

@@ -1,6 +1,6 @@
 module RatingsHelper
   def show_rating_result(object)
-    "<i class=\"score\">Score: #{object.rating.score}</i>"
+    "<i class=\"score\">Score: #{object.current_rating}</i>"
   end
 
   def hide_voted(object)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_18_073503) do
+ActiveRecord::Schema.define(version: 2019_04_18_061852) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -77,11 +77,13 @@ ActiveRecord::Schema.define(version: 2019_04_18_073503) do
 
   create_table "ratings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "score", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.string "linkable_type"
     t.bigint "linkable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["linkable_type", "linkable_id"], name: "index_ratings_on_linkable_type_and_linkable_id"
+    t.index ["user_id"], name: "index_ratings_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -96,16 +98,6 @@ ActiveRecord::Schema.define(version: 2019_04_18_073503) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "votes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.boolean "like", default: true, null: false
-    t.bigint "user_id"
-    t.bigint "rating_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["rating_id"], name: "index_votes_on_rating_id"
-    t.index ["user_id"], name: "index_votes_on_user_id"
-  end
-
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
@@ -113,6 +105,5 @@ ActiveRecord::Schema.define(version: 2019_04_18_073503) do
   add_foreign_key "badges", "questions"
   add_foreign_key "badges", "users"
   add_foreign_key "questions", "users"
-  add_foreign_key "votes", "ratings"
-  add_foreign_key "votes", "users"
+  add_foreign_key "ratings", "users"
 end

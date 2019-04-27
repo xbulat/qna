@@ -7,15 +7,19 @@ module Votes
 
   def like
     unless current_user.author_of?(@voted)
-      @voted.rating_up(current_user)
+      @voted.ratings.create!(user: current_user, score: 1)
       render_json
+    else
+      render plain: 'Forbidden', status: :forbidden
     end
   end
 
   def dislike
     unless current_user.author_of?(@voted)
-      @voted.rating_down(current_user)
+      @voted.ratings.create!(user: current_user, score: -1)
       render_json
+    else
+      render plain: 'Forbidden', status: :forbidden
     end
   end
 
@@ -27,7 +31,7 @@ module Votes
   private
 
   def render_json
-    render json: { score: @voted.rating.score, klass: @voted.class.to_s.underscore, id: @voted.id }
+    render json: { score: @voted.current_rating, klass: @voted.class.to_s.underscore, id: @voted.id }
   end
 
   def model_klass

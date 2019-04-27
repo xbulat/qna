@@ -4,6 +4,11 @@ $(document).on('turbolinks:load', function(){
     var voteClass = '.' + data.klass + '-id-' + data.id
     $(voteClass + ' .votes-actions').toggleClass('hidden');
     $(voteClass + ' .votes-revoke').toggleClass('hidden');
-    $(voteClass + ' .votes-rating').html('<i class="score">Score: ' + data.score + '</i>');
    })
+
+  $('.votes-links').on('ajax:success', function(e){
+   var data = e.detail[0];
+   var voteClass = '.votes-' + data.klass + '-id-' + data.id
+   $(voteClass + ' .votes-rating').html('<i class="score">Score: ' + data.score + '</i>');
+  })
 });
