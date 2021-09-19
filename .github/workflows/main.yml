@@ -49,7 +49,7 @@ jobs:
           AUTH: ${{ secrets.AUTH }}
         run: |
           echo "$AUTH" | base64 --decode > ${HOME}/key.json
-          rm ${HOME/key.json}
+          rm ${HOME}/key.json
 
       - name: Docker-compose
         run: |
