@@ -43,3 +43,14 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Write key file
+        env:
+          AUTH: ${{ secrets.AUTH }}
+        run: |
+          echo "$AUTH" | base64 --decode > ${HOME}/key.json
+          rm ${HOME/key.json}
+
+      - name: Docker-compose
+        run: |
+          docker-compose --help
