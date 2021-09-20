@@ -3,10 +3,6 @@ name: Base-image
 on:
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Additional tag'
-        required: false
-        default: ${{ github.sha }}
       tags:
         description: 'Create a new base-image'
 
