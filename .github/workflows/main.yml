@@ -19,6 +19,10 @@ jobs:
       packages: write
 
     steps:
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -38,6 +42,10 @@ jobs:
             ${{ github.sha }}
             ${{ github.actor }}
             ${{ steps.date.outputs.date }}
+            type=sha
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
